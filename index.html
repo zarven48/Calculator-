@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>fqr.calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100dvh;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .calculator {
+      width: 320px;
+      border: 2px solid #444;
+      border-radius: 20px;
+      padding: 20px;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .display {
+      text-align: right;
+      font-size: 2.5rem;
+      padding: 10px;
+      margin-bottom: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      width: 100%;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    button {
+      height: 60px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      background-color: #333;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:active {
+      background-color: #555;
+    }
+
+    .btn-grey {
+      background-color: #a5a5a5;
+      color: black;
+    }
+
+    .btn-orange {
+      background-color: #ff9500;
+      color: white;
+    }
+
+    .btn-zero {
+      grid-column: span 2;
+      border-radius: 40px;
+      text-align: left;
+      padding-left: 28px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: #bbb;
+      background-color: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Efek love jatuh */
+    .falling-heart {
+      position: fixed;
+      top: -30px;
+      font-size: 24px;
+      animation: fall 2s linear forwards;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="calculator">
+      <input type="text" class="display" id="display" disabled>
+      <div class="buttons">
+        <button class="btn-grey" onclick="clearDisplay()">AC</button>
+        <button class="btn-grey" onclick="toggleSign()">±</button>
+        <button class="btn-grey" onclick="append('%')">%</button>
+        <button class="btn-orange" onclick="append('/')">÷</button>
+
+        <button onclick="append('7')">7</button>
+        <button onclick="append('8')">8</button>
+        <button onclick="append('9')">9</button>
+        <button class="btn-orange" onclick="append('*')">×</button>
+
+        <button onclick="append('4')">4</button>
+        <button onclick="append('5')">5</button>
+        <button onclick="append('6')">6</button>
+        <button class="btn-orange" onclick="append('-')">−</button>
+
+        <button onclick="append('1')">1</button>
+        <button onclick="append('2')">2</button>
+        <button onclick="append('3')">3</button>
+        <button class="btn-orange" onclick="append('+')">+</button>
+
+        <button class="btn-zero" onclick="append('0')">0</button>
+        <button onclick="append('.')">.</button>
+        <button class="btn-orange" onclick="calculateGombal()">=</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 - fqr.calculator
+  </footer>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function append(value) {
+      const gombalTexts = ["I LOVE U", "I MISS U", "❤️"];
+    
+      if (gombalTexts.includes(display.value)) {
+        display.value = ""; // hapus dulu gombal
+      }
+    
+      display.value += value;
+    }
+
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function toggleSign() {
+      if (display.value) {
+        if (display.value.startsWith("-")) {
+          display.value = display.value.slice(1);
+        } else {
+          display.value = "-" + display.value;
+        }
+      }
+    }
+
+    function loveFall() {
+      const heart = document.createElement("span");
+      heart.className = "falling-heart";
+      heart.textContent = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 2000);
+    }
+
+    function calculateGombal() {
+      const value = display.value;
+    
+      // Cek apakah ekspresi valid: angka + operator + angka
+      const pattern = /^\s*\d+(\.\d+)?\s*[\+\-\*\/%]\s*\d+(\.\d+)?\s*$/;
+    
+      if (pattern.test(value)) {
+        let gombal = "❤️";
+    
+        if (value.includes('+')) gombal = "I LOVE U";
+        else if (value.includes('-')) gombal = "I MISS U";
+        else if (value.includes('*')) gombal = "I LOVE U";
+        else if (value.includes('/')) gombal = "I MISS U";
+        else if (value.includes('%')) gombal = "I LOVE U";
+    
+        display.value = gombal;
+    
+        // Efek love jatuh 15 kali
+        for (let i = 0; i < 15; i++) {
+          setTimeout(loveFall, i * 100);
+        }
+      }
+    }
+
+  </script>
+</body>
+</html>
