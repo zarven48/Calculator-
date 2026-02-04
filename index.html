@@ -183,7 +183,7 @@
     function loveFall() {
       const heart = document.createElement("span");
       heart.className = "falling-heart";
-      heart.textContent = "❤️";
+      heart.textContent = "❤️💗";
       heart.style.left = Math.random() * 100 + "vw";
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 2000);
@@ -196,7 +196,7 @@
       const pattern = /^\s*\d+(\.\d+)?\s*[\+\-\*\/%]\s*\d+(\.\d+)?\s*$/;
     
       if (pattern.test(value)) {
-        let gombal = "❤️";
+        let gombal = "❤️💗";
     
         if (value.includes('+')) gombal = "I LOVE U";
         else if (value.includes('-')) gombal = "I MISS U";
@@ -216,4 +216,5 @@
   </script>
 </body>
 </html>
+
 
